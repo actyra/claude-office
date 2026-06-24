@@ -8,6 +8,10 @@ All notable changes to Claude Office Visualizer are documented here.
 
 - **Schedule-editor cron helpers (frontend)**: new `src/utils/cron.ts` with pure functions that round-trip between a friendly schedule editor and a 5-field cron expression — `timesToCron` (fixed daily times → cron), `intervalToCron` (every-N-minutes within an hour window → cron), and `cronToEditor` (parse cron back into editor state, falling back to a raw-mode escape hatch), plus `DEFAULT_BUSINESS_HOURS` (8–23) and `enterTimesHours`. Zero dependencies, 12 vitest cases. Mined from PR #51, whose companion `pathfinding.ts` was rejected because the existing `systems/astar.ts` is strictly superior (binary heap, 8-directional)
 
+### Fixed
+
+- **Attention toast dismiss button rendered its close glyph as raw source text**: the ✕ was authored as a Unicode escape sitting directly in JSX text, where escapes are not interpreted, so the literal escape sequence showed on the button instead of an ✕. Moved it into a string expression so the escape resolves to the ✕ glyph, matching how the other glyphs in this file are written
+
 ## [0.21.0] - 2026-06-17
 
 ### Changed
