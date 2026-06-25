@@ -11,6 +11,7 @@ All notable changes to Claude Office Visualizer are documented here.
 ### Fixed
 
 - **Hook crash on Windows with a conflicting system OpenSSL (`OPENSSL_Uplink: no OPENSSL_Applink`)**: `send_event` posts only to the local backend over plain HTTP, but Python 3.14's `urllib.request.urlopen` builds an SSL-capable opener (an `HTTPSHandler` whose context is created eagerly). On machines where a foreign OpenSSL config/cert is in play (e.g. `SSL_CERT_FILE`/`SSL_CERT_DIR` set by another install, or a `libcrypto` in `System32`), creating that context aborts the whole process at the C level — so no event was ever sent and the office stayed empty. The hook now builds an `OpenerDirector` with only `HTTPHandler` for `http://` URLs (no SSL context, no crash) and keeps the standard SSL-capable opener for `https://` backends, so remote deployments are unaffected
+- **Attention toast dismiss button rendered its close glyph as raw source text**: the ✕ was authored as a Unicode escape sitting directly in JSX text, where escapes are not interpreted, so the literal escape sequence showed on the button instead of an ✕. Moved it into a string expression so the escape resolves to the ✕ glyph, matching how the other glyphs in this file are written
 
 ## [0.21.0] - 2026-06-17
 
